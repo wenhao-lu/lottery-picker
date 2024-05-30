@@ -34,7 +34,7 @@ function LotteryPool({ numbers }) {
 LotteryPool.propTypes = {
   numbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
 };
-update;
+
 function NumPicking() {
   return (
     <div>
