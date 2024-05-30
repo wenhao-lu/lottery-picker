@@ -78,3 +78,6 @@
   display: flex;
   flex-flow: column;
 }
+.luckyNum {
+  margin: 0 10px;
+}

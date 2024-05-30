@@ -6,13 +6,27 @@ import lottoImage2 from "./assets/lotto-max.png";
 
 function App() {
   const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
-  console.log(poolNumbers);
+  //console.log(poolNumbers);
+
+  const [luckyNums, setLuckyNums] = useState("");
+  const [randomNums, setRandomNums] = useState([""]);
+  const arrLuckyNums = luckyNums.split(",");
+  //console.log(arrLuckyNums);
+
+  const handleInputNum = (e) => {
+    setLuckyNums(e.target.value);
+  };
+
   return (
     <div className="main">
       <h1>Lukcy Lottery Picker</h1>
       <div className="container">
         <LotteryPool numbers={poolNumbers} />
-        <NumPicking />
+        <NumPicking
+          luckyNums={luckyNums}
+          onInputNum={handleInputNum}
+          arrLuckyNums={arrLuckyNums}
+        />
       </div>
     </div>
   );
@@ -37,7 +51,13 @@ LotteryPool.propTypes = {
   numbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
 };
 
-function NumPicking() {
+NumPicking.propTypes = {
+  luckyNums: PropTypes.string.isRequired, // expecting a string
+  onInputNum: PropTypes.string.isRequired, // expecting a string
+  arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
+};
+
+function NumPicking({ luckyNums, onInputNum, arrLuckyNums }) {
   return (
     <div className="sidebar">
       <div>
@@ -55,9 +75,15 @@ function NumPicking() {
       </div>
       <div className="numInputWrap">
         <label>lucky number</label>
-        <input type="text" />
+        <input type="text" value={luckyNums} onChange={onInputNum} />
       </div>
-      <div>output</div>
+      <div>
+        {arrLuckyNums.map((num, index) => (
+          <span key={index} className="luckyNum">
+            {num}
+          </span>
+        ))}
+      </div>
       <button>feeling lucky</button>
     </div>
   );
