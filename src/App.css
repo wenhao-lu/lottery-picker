@@ -43,3 +43,13 @@
 .container {
   display: flex;
 }
+.numbersContainer {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.numberBackground {
+  background-color: aqua;
+  border-radius: 20px;
+}
