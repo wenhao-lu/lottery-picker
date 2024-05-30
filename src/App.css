@@ -52,4 +52,29 @@
 .numberBackground {
   background-color: aqua;
   border-radius: 20px;
+  width: 26px;
+}
+.numberSide {
+  width: 60%;
+}
+
+.lottoImg-1,
+.lottoImg-2 {
+  width: 15%;
+  margin: auto;
+}
+.chooseLottoWrap {
+  display: flex;
+  flex-flow: column;
+}
+.chooseContainer {
+  display: flex;
+}
+.sidebar {
+  width: 60%;
+  margin: 0 auto;
+}
+.numInputWrap {
+  display: flex;
+  flex-flow: column;
 }
