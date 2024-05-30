@@ -81,3 +81,8 @@
 .luckyNum {
   margin: 0 10px;
 }
+.lottoNum {
+  color: green;
+  font-size: larger;
+  margin: 10px;
+}

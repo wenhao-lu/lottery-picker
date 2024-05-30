@@ -8,31 +8,49 @@ function App() {
   const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
   //console.log(poolNumbers);
 
-  const [luckyNums, setLuckyNums] = useState("");
-  const [randomNums, setRandomNums] = useState([""]);
-  const arrLuckyNums = luckyNums.split(",");
-  //console.log(arrLuckyNums);
+  const [luckyNums, setLuckyNums] = useState(""); //user input strings
+  const [randomNums, setRandomNums] = useState([]);
+  const [arrLuckyNums, setArrLuckyNums] = useState([]); //extract numbers from input and put into a new array
 
   const handleInputNum = (e) => {
-    setLuckyNums(e.target.value);
+    const inputString = e.target.value;
+    setLuckyNums(inputString);
+
+    const inputConvert = inputString.match(/\d+/g); //extract numbers from input strings
+    setArrLuckyNums(inputConvert); // add the number to an new array
   };
 
+  const generateNum = () => {
+    let randomArr = [];
+    for (let i = 0; i < 6; i++) {
+      // repeat 6 times
+      const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
+      randomArr.push(random649);
+    }
+    //console.log(randomArr);
+    setRandomNums(randomArr);
+  };
   return (
     <div className="main">
       <h1>Lukcy Lottery Picker</h1>
       <div className="container">
-        <LotteryPool numbers={poolNumbers} />
+        <LotteryPool numbers={poolNumbers} randomNums={randomNums} />
         <NumPicking
           luckyNums={luckyNums}
-          onInputNum={handleInputNum}
           arrLuckyNums={arrLuckyNums}
+          onInputNum={handleInputNum}
+          onRandomNum={generateNum}
         />
       </div>
     </div>
   );
 }
 
-function LotteryPool({ numbers }) {
+App.propTypes = {
+  luckyNums: PropTypes.string,
+};
+
+function LotteryPool({ numbers, randomNums }) {
   return (
     <div className="numberSide">
       <div className="numbersContainer">
@@ -42,22 +60,28 @@ function LotteryPool({ numbers }) {
           </div>
         ))}
       </div>
-      <div>output</div>
+      {randomNums?.map((num, index) => (
+        <div key={index} className="lottoNum">
+          {num}
+        </div>
+      ))}
     </div>
   );
 }
 
 LotteryPool.propTypes = {
   numbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
+  randomNums: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 NumPicking.propTypes = {
   luckyNums: PropTypes.string.isRequired, // expecting a string
-  onInputNum: PropTypes.string.isRequired, // expecting a string
+  onInputNum: PropTypes.func.isRequired, // expecting a string
+  onRandomNum: PropTypes.func.isRequired, // expecting a string
   arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
 };
 
-function NumPicking({ luckyNums, onInputNum, arrLuckyNums }) {
+function NumPicking({ luckyNums, arrLuckyNums, onInputNum, onRandomNum }) {
   return (
     <div className="sidebar">
       <div>
@@ -78,13 +102,13 @@ function NumPicking({ luckyNums, onInputNum, arrLuckyNums }) {
         <input type="text" value={luckyNums} onChange={onInputNum} />
       </div>
       <div>
-        {arrLuckyNums.map((num, index) => (
+        {arrLuckyNums?.map((num, index) => (
           <span key={index} className="luckyNum">
             {num}
           </span>
         ))}
       </div>
-      <button>feeling lucky</button>
+      <button onClick={onRandomNum}>Get Ticket</button>
     </div>
   );
 }
