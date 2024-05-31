@@ -5,7 +5,7 @@ import lottoImage1 from "./assets/lotto-649.png";
 import lottoImage2 from "./assets/lotto-max.png";
 
 function App() {
-  const numbers649 = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
+  const numbers649 = Array.from({ length: 49 }, (_, i) => i + 1); // create an array contains number 1-49
   const numbersMax = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
   //console.log(numbersMax);
 
@@ -93,18 +93,41 @@ function LotteryPool({
 }) {
   return (
     <div className="numberSide">
-      <div className="numbersContainer">
-        {numbersmax.map((number) => (
-          <div className="singleNum" key={number}>
-            <div className="numberBackground">{number}</div>
+      {lottoType === "649" ? ( //render numbers for the drawing pool
+        <div>
+          <div className="numbersContainer">
+            {numbers649.map((number) => (
+              <div className="singleNum" key={number}>
+                <div className="numberBackground">{number}</div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      {randomNums?.map((num, index) => (
-        <div key={index} className="lottoNum">
-          {num}
+          <div className="lottoNumWrap">
+            {randomNums?.map((num, index) => (
+              <div key={index} className="lottoNum">
+                {num}
+              </div>
+            ))}
+          </div>
         </div>
-      ))}
+      ) : (
+        <div>
+          <div className="numbersContainer">
+            {numbersmax.map((number) => (
+              <div className="singleNum" key={number}>
+                <div className="numberBackground">{number}</div>
+              </div>
+            ))}
+          </div>
+          <div className="lottoNumWrap">
+            {randomMax?.map((num, index) => (
+              <div key={index} className="lottoNum">
+                {num}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

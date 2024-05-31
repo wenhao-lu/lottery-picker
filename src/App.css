@@ -86,3 +86,7 @@
   font-size: larger;
   margin: 10px;
 }
+.lottoNumWrap {
+  display: flex;
+  justify-content: center;
+}
