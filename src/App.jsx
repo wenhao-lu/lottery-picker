@@ -73,7 +73,7 @@ function App() {
           onRandomNum={generateNum}
           onRandomNumMax={generateMax}
           lottoType={lottoType}
-          onLottoType={handleLottoType}
+          onLottoTypeChange={handleLottoType}
         />
       </div>
     </div>
@@ -124,7 +124,7 @@ NumPicking.propTypes = {
   onRandomNumMax: PropTypes.func.isRequired, // expecting a function
   arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
   lottoType: PropTypes.string.isRequired,
-  onLottoType: PropTypes.func.isRequired,
+  onLottoTypeChange: PropTypes.func.isRequired,
 };
 
 function NumPicking({
@@ -134,7 +134,7 @@ function NumPicking({
   onRandomNum,
   onRandomNumMax,
   lottoType,
-  onLottoType,
+  onLottoTypeChange,
 }) {
   return (
     <div className="sidebar">
@@ -146,7 +146,7 @@ function NumPicking({
               type="radio"
               value="649"
               name="option"
-              onClick={(e) => onLottoType(e)}
+              onClick={(e) => onLottoTypeChange(e)}
             />
             {/*use 'name' attribute to group the radio inputs together, can only select one */}
           </div>
@@ -156,7 +156,7 @@ function NumPicking({
               type="radio"
               value="max"
               name="option"
-              onClick={(e) => onLottoType(e)}
+              onClick={(e) => onLottoTypeChange(e)}
             />
           </div>
         </div>
@@ -172,7 +172,13 @@ function NumPicking({
           </span>
         ))}
       </div>
-      <button onClick={onRandomNum}>Get Ticket</button>
+      {lottoType === "unselected" ? (
+        <button disabled>Get Ticket</button>
+      ) : lottoType === "649" ? (
+        <button onClick={onRandomNum}>Get Ticket</button>
+      ) : lottoType === "max" ? (
+        <button onClick={onRandomNumMax}>Get Ticket</button>
+      ) : null}
     </div>
   );
 }
