@@ -5,12 +5,15 @@ import lottoImage1 from "./assets/lotto-649.png";
 import lottoImage2 from "./assets/lotto-max.png";
 
 function App() {
-  const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
-  //console.log(poolNumbers);
+  const numbers649 = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
+  const numbersMax = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
+  //console.log(numbersMax);
 
   const [luckyNums, setLuckyNums] = useState(""); //user input strings
-  const [randomNums, setRandomNums] = useState([]);
+  const [randomNums, setRandomNums] = useState([]); // random numbers for lotto-649
+  const [randomMax, setRandomMax] = useState([]); // random numbers for lotto-max
   const [arrLuckyNums, setArrLuckyNums] = useState([]); //extract numbers from input and put into a new array
+  const [lottoType, setLottoType] = useState("unselected"); // switch lotto ticket type, lotto-649 or lotto-max
 
   const handleInputNum = (e) => {
     const inputString = e.target.value;
@@ -20,6 +23,7 @@ function App() {
     setArrLuckyNums(inputConvert); // add the number to an new array
   };
 
+  // generate 6 random numbers from 1-49 for lotto-649
   const generateNum = () => {
     let randomArr = [];
     for (let i = 0; i < 6; i++) {
@@ -30,16 +34,46 @@ function App() {
     //console.log(randomArr);
     setRandomNums(randomArr);
   };
+
+  // generate 7 random numbers 1-50 for lotto-max
+  const generateMax = () => {
+    let randomMaxArr = [];
+    for (let i = 0; i < 7; i++) {
+      const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
+      randomMaxArr.push(randomNumMax);
+    }
+    //console.log(randomMaxArr);
+    setRandomMax(randomMaxArr);
+  };
+
+  const handleLottoType = (e) => {
+    const radioInputValue = e.target.value;
+    if (radioInputValue !== "649" && radioInputValue !== "max") {
+      setLottoType("unselected");
+    } else {
+      setLottoType(radioInputValue);
+    }
+  };
+
   return (
     <div className="main">
       <h1>Lukcy Lottery Picker</h1>
       <div className="container">
-        <LotteryPool numbers={poolNumbers} randomNums={randomNums} />
+        <LotteryPool
+          numbers649={numbers649}
+          numbersmax={numbersMax}
+          randomNums={randomNums}
+          randomMax={randomMax}
+          lottoType={lottoType}
+        />
         <NumPicking
           luckyNums={luckyNums}
           arrLuckyNums={arrLuckyNums}
           onInputNum={handleInputNum}
           onRandomNum={generateNum}
+          onRandomNumMax={generateMax}
+          lottoType={lottoType}
+          onLottoType={handleLottoType}
         />
       </div>
     </div>
@@ -50,11 +84,17 @@ App.propTypes = {
   luckyNums: PropTypes.string,
 };
 
-function LotteryPool({ numbers, randomNums }) {
+function LotteryPool({
+  numbers649,
+  numbersmax,
+  randomNums,
+  randomMax,
+  lottoType,
+}) {
   return (
     <div className="numberSide">
       <div className="numbersContainer">
-        {numbers.map((number) => (
+        {numbersmax.map((number) => (
           <div className="singleNum" key={number}>
             <div className="numberBackground">{number}</div>
           </div>
@@ -70,30 +110,54 @@ function LotteryPool({ numbers, randomNums }) {
 }
 
 LotteryPool.propTypes = {
-  numbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
+  numbersmax: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
+  numbers649: PropTypes.arrayOf(PropTypes.number).isRequired,
   randomNums: PropTypes.arrayOf(PropTypes.number).isRequired,
+  randomMax: PropTypes.arrayOf(PropTypes.number).isRequired,
+  lottoType: PropTypes.string.isRequired,
 };
 
 NumPicking.propTypes = {
   luckyNums: PropTypes.string.isRequired, // expecting a string
-  onInputNum: PropTypes.func.isRequired, // expecting a string
-  onRandomNum: PropTypes.func.isRequired, // expecting a string
+  onInputNum: PropTypes.func.isRequired, // expecting a function
+  onRandomNum: PropTypes.func.isRequired, // expecting a function
+  onRandomNumMax: PropTypes.func.isRequired, // expecting a function
   arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
+  lottoType: PropTypes.string.isRequired,
+  onLottoType: PropTypes.func.isRequired,
 };
 
-function NumPicking({ luckyNums, arrLuckyNums, onInputNum, onRandomNum }) {
+function NumPicking({
+  luckyNums,
+  arrLuckyNums,
+  onInputNum,
+  onRandomNum,
+  onRandomNumMax,
+  lottoType,
+  onLottoType,
+}) {
   return (
     <div className="sidebar">
       <div>
         <div className="chooseContainer">
           <div className="chooseLottoWrap">
             <img className="lottoImg-1" src={lottoImage1} alt="lotto-649" />
-            <input type="radio" value="649" name="option" />
+            <input
+              type="radio"
+              value="649"
+              name="option"
+              onClick={(e) => onLottoType(e)}
+            />
             {/*use 'name' attribute to group the radio inputs together, can only select one */}
           </div>
           <div className="chooseLottoWrap">
             <img className="lottoImg-2" src={lottoImage2} alt="lotto-max" />
-            <input type="radio" value="max" name="option" />
+            <input
+              type="radio"
+              value="max"
+              name="option"
+              onClick={(e) => onLottoType(e)}
+            />
           </div>
         </div>
       </div>
