@@ -10,13 +10,15 @@ h1 {
   text-align: center;
   color: #333;
 }
+#root {
+  margin: auto;
+}
 
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 20px;
 }
 
 /* Container styles */
@@ -35,14 +37,16 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 46vw;
+  height: 60vh;
 }
 
 .numbersContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 1.2vw;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 5em;
 }
 
 .singleNum {
@@ -62,12 +66,13 @@ h1 {
 
 .lottoNumWrap {
   display: flex;
-  gap: 10px;
+  gap: 1em;
+  justify-content: center;
 }
 
 .lottoNum {
-  width: 30px;
-  height: 30px;
+  width: 3em;
+  height: 3em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -75,6 +80,16 @@ h1 {
   border-radius: 50%;
   color: #333;
   font-weight: bold;
+  animation: fadeIn 5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* NumPicking styles */
@@ -82,6 +97,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 30vw;
 }
 
 .chooseContainer {
@@ -95,6 +111,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1em 3em;
 }
 
 .lottoImg-1,
@@ -118,19 +135,26 @@ h1 {
 .numInputWrap input {
   padding: 5px;
   font-size: 16px;
-  width: 100px;
+  width: 15vw;
   text-align: center;
 }
-
+.luckyNumWrap {
+  height: 5.4em;
+}
 .luckyNum {
   display: inline-block;
   margin: 5px;
   padding: 5px 10px;
-  background-color: #ffeb3b;
+  background-color: #3bffa9;
   border-radius: 4px;
   font-weight: bold;
 }
-
+.ticketBtn {
+  background-color: #00acff;
+}
+.ticketBtn:hover {
+  background-color: #0056b3;
+}
 button {
   padding: 10px 20px;
   font-size: 16px;
@@ -146,10 +170,6 @@ button {
 button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
-}
-
-button:hover:not(:disabled) {
-  background-color: #0056b3;
 }
 
 .reset {

@@ -18,7 +18,7 @@ function App() {
     const inputString = e.target.value;
     setLuckyNums(inputString);
     const inputConvert = inputString.match(/\d+/g); //extract numbers from input strings
-    const inputConvertUnique = Array.from(new Set(inputConvert)); // remove duplicated numbers
+    const inputConvertUnique = Array.from(new Set(inputConvert)).map(Number); // remove duplicated numbers from string and convert to numbers  '12345'=>[1,2,3,4,5]
     setArrLuckyNums(inputConvertUnique); // add the number to an new array
   };
 
@@ -64,13 +64,32 @@ function App() {
 
   // generate 7 random numbers 1-50 for lotto-max
   const generateMax = () => {
-    const randomMaxResultSet = new Set();
-    while (randomMaxResultSet.size < 7) {
-      const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
-      randomMaxResultSet.add(randomNumMax);
+    if (arrLuckyNums && arrLuckyNums.length < 7) {
+      const randomMaxResultSet = new Set(arrLuckyNums);
+      while (randomMaxResultSet.size < 7) {
+        const randomNumMax = Math.floor(Math.random() * 50 + 1);
+        randomMaxResultSet.add(randomNumMax);
+      }
+      const randomMaxResultArr = Array.from(randomMaxResultSet);
+      setRandomMaxResult(randomMaxResultArr);
+    } else if (arrLuckyNums && arrLuckyNums.length > 7) {
+      const tempMaxArr = [...arrLuckyNums];
+      while (tempMaxArr.length > 7) {
+        const indexRemoveMax = Math.floor(Math.random() * tempMaxArr.length);
+        tempMaxArr.splice(indexRemoveMax, 1);
+      }
+      setRandomMaxResult(tempMaxArr);
+    } else if (arrLuckyNums && arrLuckyNums.length === 7) {
+      setRandomMaxResult([...arrLuckyNums]);
+    } else {
+      const randomMaxResultSet = new Set();
+      while (randomMaxResultSet.size < 7) {
+        const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
+        randomMaxResultSet.add(randomNumMax);
+      }
+      const randomMaxResultArr = Array.from(randomMaxResultSet);
+      setRandomMaxResult(randomMaxResultArr);
     }
-    const randomMaxResultArr = Array.from(randomMaxResultSet);
-    setRandomMaxResult(randomMaxResultArr);
 
     /*
     let randomMaxResultArr = [];
@@ -181,7 +200,7 @@ NumPicking.propTypes = {
   onInputNum: PropTypes.func.isRequired, // expecting a function
   onRandomNum: PropTypes.func.isRequired, // expecting a function
   onRandomNumMax: PropTypes.func.isRequired, // expecting a function
-  arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
+  arrLuckyNums: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of strings
   lottoType: PropTypes.string.isRequired,
   onLottoTypeChange: PropTypes.func.isRequired,
   onReset: PropTypes.func.isRequired,
@@ -223,10 +242,10 @@ function NumPicking({
         </div>
       </div>
       <div className="numInputWrap">
-        <label>lucky number</label>
+        <label>Your Lucky Number</label>
         <input type="text" value={luckyNums} onChange={onInputNum} />
       </div>
-      <div>
+      <div className="luckyNumWrap">
         {arrLuckyNums?.map((num, index) => (
           <span key={index} className="luckyNum">
             {num}
@@ -236,9 +255,13 @@ function NumPicking({
       {lottoType === "unselected" ? (
         <button disabled>Get Ticket</button>
       ) : lottoType === "649" ? (
-        <button onClick={onRandomNum}>Get Ticket</button>
+        <button className="ticketBtn" onClick={onRandomNum}>
+          Get Ticket
+        </button>
       ) : lottoType === "max" ? (
-        <button onClick={onRandomNumMax}>Get Ticket</button>
+        <button className="ticketBtn" onClick={onRandomNumMax}>
+          Get Ticket
+        </button>
       ) : null}
 
       <button className="reset" onClick={onReset}>
