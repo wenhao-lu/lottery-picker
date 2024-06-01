@@ -5,13 +5,12 @@ import lottoImage1 from "./assets/lotto-649.png";
 import lottoImage2 from "./assets/lotto-max.png";
 
 function App() {
-  const numbers649 = Array.from({ length: 49 }, (_, i) => i + 1); // create an array contains number 1-49
-  const numbersMax = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
-  //console.log(numbersMax);
+  const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
+  //console.log(poolNumbers);
 
   const [luckyNums, setLuckyNums] = useState(""); //user input strings
-  const [randomNums, setRandomNums] = useState([]); // random numbers for lotto-649
-  const [randomMax, setRandomMax] = useState([]); // random numbers for lotto-max
+  const [randomNumsResult, setRandomNumsResult] = useState([]); // generate random numbers for lotto-649
+  const [randomMaxResult, setRandomMaxResult] = useState([]); // generate random numbers for lotto-max
   const [arrLuckyNums, setArrLuckyNums] = useState([]); //extract numbers from input and put into a new array
   const [lottoType, setLottoType] = useState("unselected"); // switch lotto ticket type, lotto-649 or lotto-max
 
@@ -25,25 +24,43 @@ function App() {
 
   // generate 6 random numbers from 1-49 for lotto-649
   const generateNum = () => {
-    let randomArr = [];
+    const random649Set = new Set(); // create a Set Object to disable duplicated numbers
+    while (random649Set.size < 6) {
+      const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
+      random649Set.add(random649);
+    }
+    const random649Arr = Array.from(random649Set); // convert Set Object into an array
+    setRandomNumsResult(random649Arr);
+    /*
     for (let i = 0; i < 6; i++) {
       // repeat 6 times
-      const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
+      const random649 = Math.floor(Math.random() * 49 + 1); 
       randomArr.push(random649);
     }
     //console.log(randomArr);
-    setRandomNums(randomArr);
+    setRandomNumsResult(randomArr);
+    */
   };
 
   // generate 7 random numbers 1-50 for lotto-max
   const generateMax = () => {
-    let randomMaxArr = [];
+    const randomMaxResultSet = new Set();
+    while (randomMaxResultSet.size < 7) {
+      const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
+      randomMaxResultSet.add(randomNumMax);
+    }
+    const randomMaxResultArr = Array.from(randomMaxResultSet);
+    setRandomMaxResult(randomMaxResultArr);
+
+    /*
+    let randomMaxResultArr = [];
     for (let i = 0; i < 7; i++) {
       const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
-      randomMaxArr.push(randomNumMax);
+      randomMaxResultArr.push(randomNumMax);
     }
-    //console.log(randomMaxArr);
-    setRandomMax(randomMaxArr);
+    //console.log(randomMaxResultArr);
+    setRandomMaxResult(randomMaxResultArr);
+    */
   };
 
   const handleLottoType = (e) => {
@@ -60,10 +77,9 @@ function App() {
       <h1>Lukcy Lottery Picker</h1>
       <div className="container">
         <LotteryPool
-          numbers649={numbers649}
-          numbersmax={numbersMax}
-          randomNums={randomNums}
-          randomMax={randomMax}
+          poolNumbers={poolNumbers}
+          randomNumsResult={randomNumsResult}
+          randomMaxResult={randomMaxResult}
           lottoType={lottoType}
         />
         <NumPicking
@@ -85,58 +101,50 @@ App.propTypes = {
 };
 
 function LotteryPool({
-  numbers649,
-  numbersmax,
-  randomNums,
-  randomMax,
+  poolNumbers,
+  randomNumsResult,
+  randomMaxResult,
   lottoType,
 }) {
+  const sortNumsResult = randomNumsResult.slice().sort((a, b) => a - b);
+  const sortMaxResult = randomMaxResult.slice().sort((a, b) => a - b);
   return (
     <div className="numberSide">
-      {lottoType === "649" ? ( //render numbers for the drawing pool
-        <div>
-          <div className="numbersContainer">
-            {numbers649.map((number) => (
-              <div className="singleNum" key={number}>
-                <div className="numberBackground">{number}</div>
-              </div>
-            ))}
-          </div>
+      <div className="mainNums">
+        <div className="numbersContainer">
+          {poolNumbers.map((number) => (
+            <div className="singleNum" key={number}>
+              <div className="numberBackground">{number}</div>
+            </div>
+          ))}
+        </div>
+
+        {lottoType === "649" ? ( //render numbers for the drawing pool
           <div className="lottoNumWrap">
-            {randomNums?.map((num, index) => (
+            {sortNumsResult?.map((num, index) => (
               <div key={index} className="lottoNum">
                 {num}
               </div>
             ))}
           </div>
-        </div>
-      ) : (
-        <div>
-          <div className="numbersContainer">
-            {numbersmax.map((number) => (
-              <div className="singleNum" key={number}>
-                <div className="numberBackground">{number}</div>
-              </div>
-            ))}
-          </div>
+        ) : (
           <div className="lottoNumWrap">
-            {randomMax?.map((num, index) => (
+            {sortMaxResult?.map((num, index) => (
               <div key={index} className="lottoNum">
                 {num}
               </div>
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
 LotteryPool.propTypes = {
-  numbersmax: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
-  numbers649: PropTypes.arrayOf(PropTypes.number).isRequired,
-  randomNums: PropTypes.arrayOf(PropTypes.number).isRequired,
-  randomMax: PropTypes.arrayOf(PropTypes.number).isRequired,
+  poolNumbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
+  randomNumsResult: PropTypes.arrayOf(PropTypes.number).isRequired,
+  randomMaxResult: PropTypes.arrayOf(PropTypes.number).isRequired,
   lottoType: PropTypes.string.isRequired,
 };
 

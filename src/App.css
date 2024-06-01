@@ -46,7 +46,7 @@
 .numbersContainer {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 20px;
 }
 
 .numberBackground {
@@ -73,6 +73,14 @@
 .sidebar {
   width: 60%;
   margin: 0 auto;
+}
+.mainNums {
+  width: 40vw;
+  height: 60vh;
+  margin: auto;
+}
+.singleNum {
+  margin: auto;
 }
 .numInputWrap {
   display: flex;
