@@ -50,7 +50,7 @@ function App() {
       const random649Arr = Array.from(random649Set);
       setRandomNumsResult(random649Arr);
     }
-
+    setRandomMaxResult([]);
     /*
     for (let i = 0; i < 6; i++) {
       // repeat 6 times
@@ -90,7 +90,7 @@ function App() {
       const randomMaxResultArr = Array.from(randomMaxResultSet);
       setRandomMaxResult(randomMaxResultArr);
     }
-
+    setRandomNumsResult([]);
     /*
     let randomMaxResultArr = [];
     for (let i = 0; i < 7; i++) {
@@ -155,12 +155,22 @@ function LotteryPool({
 }) {
   const sortNumsResult = randomNumsResult.slice().sort((a, b) => a - b);
   const sortMaxResult = randomMaxResult.slice().sort((a, b) => a - b);
+  const matched649Nums = new Set(randomNumsResult);
+  const matchedMaxNums = new Set(randomMaxResult);
   return (
     <div className="numberSide">
       <div className="mainNums">
         <div className="numbersContainer">
+          {/* match numbers between the ticket and pool, heightlight winning numbers*/}
           {poolNumbers.map((number) => (
-            <div className="singleNum" key={number}>
+            <div
+              className={`singleNum ${
+                matched649Nums.has(number) || matchedMaxNums.has(number)
+                  ? "heightlight"
+                  : ""
+              }`}
+              key={number}
+            >
               <div className="numberBackground">{number}</div>
             </div>
           ))}

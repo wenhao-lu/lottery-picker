@@ -63,6 +63,9 @@ h1 {
   font-size: 14px;
   color: #333;
 }
+.heightlight {
+  background-color: #80bd41;
+}
 
 .lottoNumWrap {
   display: flex;
