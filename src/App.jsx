@@ -92,6 +92,13 @@ function App() {
     }
   };
 
+  const reset = () => {
+    setLuckyNums("");
+    setRandomNumsResult([]);
+    setRandomMaxResult([]);
+    setArrLuckyNums([]);
+  };
+
   return (
     <div className="main">
       <h1>Lukcy Lottery Picker</h1>
@@ -110,6 +117,7 @@ function App() {
           onRandomNumMax={generateMax}
           lottoType={lottoType}
           onLottoTypeChange={handleLottoType}
+          onReset={reset}
         />
       </div>
     </div>
@@ -176,6 +184,7 @@ NumPicking.propTypes = {
   arrLuckyNums: PropTypes.arrayOf(PropTypes.string).isRequired, // expecting an array of strings
   lottoType: PropTypes.string.isRequired,
   onLottoTypeChange: PropTypes.func.isRequired,
+  onReset: PropTypes.func.isRequired,
 };
 
 function NumPicking({
@@ -186,6 +195,7 @@ function NumPicking({
   onRandomNumMax,
   lottoType,
   onLottoTypeChange,
+  onReset,
 }) {
   return (
     <div className="sidebar">
@@ -230,6 +240,10 @@ function NumPicking({
       ) : lottoType === "max" ? (
         <button onClick={onRandomNumMax}>Get Ticket</button>
       ) : null}
+
+      <button className="reset" onClick={onReset}>
+        Reset
+      </button>
     </div>
   );
 }
