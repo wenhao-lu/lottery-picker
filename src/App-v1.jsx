@@ -17,40 +17,20 @@ function App() {
   const handleInputNum = (e) => {
     const inputString = e.target.value;
     setLuckyNums(inputString);
+
     const inputConvert = inputString.match(/\d+/g); //extract numbers from input strings
-    const inputConvertUnique = Array.from(new Set(inputConvert)); // remove duplicated numbers
-    setArrLuckyNums(inputConvertUnique); // add the number to an new array
+    setArrLuckyNums(inputConvert); // add the number to an new array
   };
 
-  // generate 6 random numbers from 1-49 for lotto-649, no duplicated numbers
+  // generate 6 random numbers from 1-49 for lotto-649
   const generateNum = () => {
-    if (arrLuckyNums && arrLuckyNums.length < 6) {
-      const random649Set = new Set(arrLuckyNums); // create a Set Object to disable duplicated numbers
-      while (random649Set.size < 6) {
-        const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
-        random649Set.add(random649);
-      }
-      const random649Arr = Array.from(random649Set); // convert Set Object into an array
-      setRandomNumsResult(random649Arr);
-    } else if (arrLuckyNums && arrLuckyNums.length > 6) {
-      const tempArr = [...arrLuckyNums];
-      while (tempArr.length > 6) {
-        const indexToRemove = Math.floor(Math.random() * tempArr.length);
-        tempArr.splice(indexToRemove, 1);
-      }
-      setRandomNumsResult(tempArr);
-    } else if (arrLuckyNums && arrLuckyNums.length === 6) {
-      setRandomNumsResult([...arrLuckyNums]);
-    } else {
-      const random649Set = new Set();
-      while (random649Set.size < 6) {
-        const random649 = Math.floor(Math.random() * 49 + 1);
-        random649Set.add(random649);
-      }
-      const random649Arr = Array.from(random649Set);
-      setRandomNumsResult(random649Arr);
+    const random649Set = new Set(); // create a Set Object to disable duplicated numbers
+    while (random649Set.size < 6) {
+      const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
+      random649Set.add(random649);
     }
-
+    const random649Arr = Array.from(random649Set); // convert Set Object into an array
+    setRandomNumsResult(random649Arr);
     /*
     for (let i = 0; i < 6; i++) {
       // repeat 6 times
