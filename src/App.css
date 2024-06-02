@@ -20,7 +20,10 @@ h1 {
   align-items: center;
   flex-direction: column;
 }
-
+.title {
+  width: 60%;
+  padding-top: 3em;
+}
 /* Container styles */
 .container {
   display: flex;
@@ -64,7 +67,24 @@ h1 {
   color: #333;
 }
 .heightlight {
-  background-color: #80bd41;
+  background-color: #035c97;
+  border-radius: 50%;
+  border-color: #003c71;
+  color: #003c71;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+.heightlight::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.heightlight::before {
+  width: 0.9em;
+  height: 0.9em;
+  border: 0.2em solid rgba(255, 254, 246, 0.7);
+  background-color: white;
+  z-index: -1;
 }
 
 .lottoNumWrap {
@@ -79,11 +99,27 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffd700;
+  background-color: #557f18;
   border-radius: 50%;
-  color: #333;
+  border-color: #25840f;
+  color: #144b7c;
   font-weight: bold;
-  animation: fadeIn 5s ease-in-out forwards;
+  animation: fadeIn 3s ease-in-out forwards;
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.5), 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+.lottoNum::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.lottoNum::before {
+  width: 1.4em;
+  height: 1.4em;
+  border: 0.2em solid rgba(255, 254, 246, 0.7);
+  background-color: white;
+  z-index: -1;
 }
 
 @keyframes fadeIn {
@@ -148,7 +184,7 @@ h1 {
   display: inline-block;
   margin: 5px;
   padding: 5px 10px;
-  background-color: #3bffa9;
+  background-color: #ffeb3b;
   border-radius: 4px;
   font-weight: bold;
 }

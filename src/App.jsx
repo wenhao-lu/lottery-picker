@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./App.css";
 import lottoImage1 from "./assets/lotto-649.png";
 import lottoImage2 from "./assets/lotto-max.png";
+import lottoImage3 from "./assets/title.png";
 
 function App() {
   const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
@@ -120,7 +121,7 @@ function App() {
 
   return (
     <div className="main">
-      <h1>Lukcy Lottery Picker</h1>
+      <img src={lottoImage3} alt="title" className="title" />
       <div className="container">
         <LotteryPool
           poolNumbers={poolNumbers}
@@ -139,6 +140,7 @@ function App() {
           onReset={reset}
         />
       </div>
+      <Footer />
     </div>
   );
 }
@@ -279,6 +281,10 @@ function NumPicking({
       </button>
     </div>
   );
+}
+
+function Footer() {
+  return <div>Kevin Lu</div>;
 }
 
 export default App;
