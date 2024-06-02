@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import "./App.css";
-import lottoImage1 from "./assets/lotto-649.png";
-import lottoImage2 from "./assets/lotto-max.png";
-import lottoImage3 from "./assets/title.png";
+import LotteryPool from "./LotteryPool";
+import NumPicking from "./NumPicking";
+import Footer from "./Footer";
+import lottoImage3 from "../assets/title.png";
 
-function App() {
+export default function App() {
   const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
   //console.log(poolNumbers);
 
@@ -148,144 +149,3 @@ function App() {
 App.propTypes = {
   luckyNums: PropTypes.string,
 };
-
-function LotteryPool({
-  poolNumbers,
-  randomNumsResult,
-  randomMaxResult,
-  lottoType,
-}) {
-  const sortNumsResult = randomNumsResult.slice().sort((a, b) => a - b);
-  const sortMaxResult = randomMaxResult.slice().sort((a, b) => a - b);
-  const matched649Nums = new Set(randomNumsResult);
-  const matchedMaxNums = new Set(randomMaxResult);
-  return (
-    <div className="numberSide">
-      <div className="mainNums">
-        <div className="numbersContainer">
-          {/* match numbers between the ticket and pool, heightlight winning numbers*/}
-          {poolNumbers.map((number) => (
-            <div
-              className={`singleNum ${
-                matched649Nums.has(number) || matchedMaxNums.has(number)
-                  ? "heightlight"
-                  : ""
-              }`}
-              key={number}
-            >
-              <div className="numberBackground">{number}</div>
-            </div>
-          ))}
-        </div>
-
-        {lottoType === "649" ? ( //render numbers for the drawing pool
-          <div className="lottoNumWrap">
-            {sortNumsResult?.map((num, index) => (
-              <div key={index} className="lottoNum">
-                {num}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="lottoNumWrap">
-            {sortMaxResult?.map((num, index) => (
-              <div key={index} className="lottoNum">
-                {num}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-LotteryPool.propTypes = {
-  poolNumbers: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of numbers
-  randomNumsResult: PropTypes.arrayOf(PropTypes.number).isRequired,
-  randomMaxResult: PropTypes.arrayOf(PropTypes.number).isRequired,
-  lottoType: PropTypes.string.isRequired,
-};
-
-NumPicking.propTypes = {
-  luckyNums: PropTypes.string.isRequired, // expecting a string
-  onInputNum: PropTypes.func.isRequired, // expecting a function
-  onRandomNum: PropTypes.func.isRequired, // expecting a function
-  onRandomNumMax: PropTypes.func.isRequired, // expecting a function
-  arrLuckyNums: PropTypes.arrayOf(PropTypes.number).isRequired, // expecting an array of strings
-  lottoType: PropTypes.string.isRequired,
-  onLottoTypeChange: PropTypes.func.isRequired,
-  onReset: PropTypes.func.isRequired,
-};
-
-function NumPicking({
-  luckyNums,
-  arrLuckyNums,
-  onInputNum,
-  onRandomNum,
-  onRandomNumMax,
-  lottoType,
-  onLottoTypeChange,
-  onReset,
-}) {
-  return (
-    <div className="sidebar">
-      <div>
-        <div className="chooseContainer">
-          <div className="chooseLottoWrap">
-            <img className="lottoImg-1" src={lottoImage1} alt="lotto-649" />
-            <input
-              type="radio"
-              value="649"
-              name="option"
-              onClick={(e) => onLottoTypeChange(e)}
-            />
-            {/*use 'name' attribute to group the radio inputs together, can only select one */}
-          </div>
-          <div className="chooseLottoWrap">
-            <img className="lottoImg-2" src={lottoImage2} alt="lotto-max" />
-            <input
-              type="radio"
-              value="max"
-              name="option"
-              onClick={(e) => onLottoTypeChange(e)}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="numInputWrap">
-        <label>Your Lucky Number</label>
-        <input type="text" value={luckyNums} onChange={onInputNum} />
-      </div>
-      <div className="luckyNumWrap">
-        {arrLuckyNums?.map((num, index) => (
-          <span key={index} className="luckyNum">
-            {num}
-          </span>
-        ))}
-      </div>
-      {lottoType === "unselected" ? (
-        <button disabled>Get Ticket</button>
-      ) : lottoType === "649" ? (
-        <button className="ticketBtn" onClick={onRandomNum}>
-          Get Ticket
-        </button>
-      ) : lottoType === "max" ? (
-        <button className="ticketBtn" onClick={onRandomNumMax}>
-          Get Ticket
-        </button>
-      ) : null}
-
-      <button className="reset" onClick={onReset}>
-        Reset
-      </button>
-    </div>
-  );
-}
-
-function Footer() {
-  const time = new Date().getFullYear();
-  return <div className="footer">&copy; Kevin Lu {time}</div>;
-}
-
-export default App;
