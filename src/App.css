@@ -220,3 +220,8 @@ button:disabled {
 .reset:hover {
   background-color: #c82333;
 }
+
+.footer {
+  font-size: 0.8em;
+  font-style: italic;
+}

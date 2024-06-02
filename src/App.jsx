@@ -284,7 +284,8 @@ function NumPicking({
 }
 
 function Footer() {
-  return <div>Kevin Lu</div>;
+  const time = new Date().getFullYear();
+  return <div className="footer">&copy; Kevin Lu {time}</div>;
 }
 
 export default App;
