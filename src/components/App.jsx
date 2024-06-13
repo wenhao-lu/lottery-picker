@@ -110,6 +110,8 @@ export default function App() {
       setLottoType("unselected");
     } else {
       setLottoType(radioInputValue);
+      setRandomNumsResult([]);
+      setRandomMaxResult([]);
     }
   };
 
