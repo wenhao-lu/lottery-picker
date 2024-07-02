@@ -1,125 +1,166 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useReducer } from "react";
 import "./App.css";
 import LotteryPool from "./LotteryPool";
 import NumPicking from "./NumPicking";
 import Footer from "./Footer";
 import lottoImage3 from "../assets/title.png";
 
+const initialState = {
+  luckyNums: "",
+  arrLuckyNums: [],
+  randomNumsResult: [],
+  randomMaxResult: [],
+  lottoType: "unselected",
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "type/select": {
+      let radioInputValue = action.payload;
+      if (radioInputValue !== "649" && radioInputValue !== "max") {
+        state.lottoType = "unselected";
+      } else {
+        state.lottoType = radioInputValue;
+      }
+      return {
+        ...state,
+        randomNumsResult: [],
+        randomMaxResult: [],
+        lottoType: state.lottoType,
+      };
+    }
+
+    case "user/input": {
+      const inputString = action.payload;
+      const inputConvert = inputString.match(/\d+/g);
+      const inputConvertUnique = Array.from(new Set(inputConvert)).map(Number);
+      return {
+        ...state,
+        luckyNums: inputString,
+        arrLuckyNums: inputConvertUnique,
+      };
+    }
+
+    case "pick/random649": {
+      let randomNumsResult = [];
+      if (state.arrLuckyNums && state.arrLuckyNums.length < 6) {
+        const random649Set = new Set(state.arrLuckyNums); // create a Set Object to disable duplicated numbers
+        while (random649Set.size < 6) {
+          const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
+          random649Set.add(random649);
+        }
+        randomNumsResult = Array.from(random649Set); // convert Set Object into an array
+      } else if (state.arrLuckyNums && state.arrLuckyNums.length > 6) {
+        const tempArr = [...state.arrLuckyNums];
+        while (tempArr.length > 6) {
+          const indexToRemove = Math.floor(Math.random() * tempArr.length);
+          tempArr.splice(indexToRemove, 1);
+        }
+        randomNumsResult = tempArr;
+      } else if (state.arrLuckyNums && state.arrLuckyNums.length === 6) {
+        randomNumsResult = [...state.arrLuckyNums];
+      } else {
+        const random649Set = new Set();
+        while (random649Set.size < 6) {
+          const random649 = Math.floor(Math.random() * 49 + 1);
+          random649Set.add(random649);
+        }
+        randomNumsResult = Array.from(random649Set);
+      }
+      return {
+        ...state,
+        randomNumsResult,
+        randomMaxResult: [],
+      };
+    }
+
+    case "pick/randomMax": {
+      let randomMaxResult = [];
+
+      if (state.arrLuckyNums && state.arrLuckyNums.length < 7) {
+        const randomMaxResultSet = new Set(state.arrLuckyNums);
+        while (randomMaxResultSet.size < 7) {
+          const randomNumMax = Math.floor(Math.random() * 50 + 1);
+          randomMaxResultSet.add(randomNumMax);
+        }
+        randomMaxResult = Array.from(randomMaxResultSet);
+      } else if (state.arrLuckyNums && state.arrLuckyNums.length > 7) {
+        const tempMaxArr = [...state.arrLuckyNums];
+        while (tempMaxArr.length > 7) {
+          const indexRemoveMax = Math.floor(Math.random() * tempMaxArr.length);
+          tempMaxArr.splice(indexRemoveMax, 1);
+        }
+        randomMaxResult = tempMaxArr;
+      } else if (state.arrLuckyNums && state.arrLuckyNums.length === 7) {
+        randomMaxResult = [...state.arrLuckyNums];
+      } else {
+        const randomMaxResultSet = new Set();
+        while (randomMaxResultSet.size < 7) {
+          const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
+          randomMaxResultSet.add(randomNumMax);
+        }
+        randomMaxResult = Array.from(randomMaxResultSet);
+      }
+      return {
+        ...state,
+        randomMaxResult,
+        randomNumsResult: [],
+      };
+    }
+
+    case "reset":
+      return initialState;
+
+    default:
+      throw new Error("Unkonwn type");
+  }
+}
+
 export default function App() {
   const poolNumbers = Array.from({ length: 50 }, (_, i) => i + 1); // create an array contains number 1-50
   //console.log(poolNumbers);
-
+  /*
   const [luckyNums, setLuckyNums] = useState(""); //user input strings
   const [randomNumsResult, setRandomNumsResult] = useState([]); // generate random numbers for lotto-649
   const [randomMaxResult, setRandomMaxResult] = useState([]); // generate random numbers for lotto-max
   const [arrLuckyNums, setArrLuckyNums] = useState([]); //extract numbers from input strings and put into a new array
   const [lottoType, setLottoType] = useState("unselected"); // switch lotto ticket type, lotto-649 or lotto-max
+  */
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const {
+    luckyNums,
+    arrLuckyNums,
+    randomNumsResult,
+    randomMaxResult,
+    lottoType,
+  } = state;
 
   const handleInputNum = (e) => {
     const inputString = e.target.value;
-    setLuckyNums(inputString);
-    const inputConvert = inputString.match(/\d+/g); //extract numbers from input strings
-    const inputConvertUnique = Array.from(new Set(inputConvert)).map(Number); // remove duplicated numbers from string and convert to numbers  '12345'=>[1,2,3,4,5]
-    setArrLuckyNums(inputConvertUnique); // add the number to an new array
+    dispatch({ type: "user/input", payload: inputString });
   };
 
   // generate 6 random numbers from 1-49 for lotto-649, no duplicated numbers
   const generateNum = () => {
-    if (arrLuckyNums && arrLuckyNums.length < 6) {
-      const random649Set = new Set(arrLuckyNums); // create a Set Object to disable duplicated numbers
-      while (random649Set.size < 6) {
-        const random649 = Math.floor(Math.random() * 49 + 1); // generate a random number from 1-49
-        random649Set.add(random649);
-      }
-      const random649Arr = Array.from(random649Set); // convert Set Object into an array
-      setRandomNumsResult(random649Arr);
-    } else if (arrLuckyNums && arrLuckyNums.length > 6) {
-      const tempArr = [...arrLuckyNums];
-      while (tempArr.length > 6) {
-        const indexToRemove = Math.floor(Math.random() * tempArr.length);
-        tempArr.splice(indexToRemove, 1);
-      }
-      setRandomNumsResult(tempArr);
-    } else if (arrLuckyNums && arrLuckyNums.length === 6) {
-      setRandomNumsResult([...arrLuckyNums]);
-    } else {
-      const random649Set = new Set();
-      while (random649Set.size < 6) {
-        const random649 = Math.floor(Math.random() * 49 + 1);
-        random649Set.add(random649);
-      }
-      const random649Arr = Array.from(random649Set);
-      setRandomNumsResult(random649Arr);
-    }
-    setRandomMaxResult([]);
-    /*
-    for (let i = 0; i < 6; i++) {
-      // repeat 6 times
-      const random649 = Math.floor(Math.random() * 49 + 1); 
-      randomArr.push(random649);
-    }
-    //console.log(randomArr);
-    setRandomNumsResult(randomArr);
-    */
+    // the action pick random numbers is purely state-driven , no extra action/data needed, so no payload needed
+    dispatch({ type: "pick/random649" });
   };
 
   // generate 7 random numbers 1-50 for lotto-max
   const generateMax = () => {
-    if (arrLuckyNums && arrLuckyNums.length < 7) {
-      const randomMaxResultSet = new Set(arrLuckyNums);
-      while (randomMaxResultSet.size < 7) {
-        const randomNumMax = Math.floor(Math.random() * 50 + 1);
-        randomMaxResultSet.add(randomNumMax);
-      }
-      const randomMaxResultArr = Array.from(randomMaxResultSet);
-      setRandomMaxResult(randomMaxResultArr);
-    } else if (arrLuckyNums && arrLuckyNums.length > 7) {
-      const tempMaxArr = [...arrLuckyNums];
-      while (tempMaxArr.length > 7) {
-        const indexRemoveMax = Math.floor(Math.random() * tempMaxArr.length);
-        tempMaxArr.splice(indexRemoveMax, 1);
-      }
-      setRandomMaxResult(tempMaxArr);
-    } else if (arrLuckyNums && arrLuckyNums.length === 7) {
-      setRandomMaxResult([...arrLuckyNums]);
-    } else {
-      const randomMaxResultSet = new Set();
-      while (randomMaxResultSet.size < 7) {
-        const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
-        randomMaxResultSet.add(randomNumMax);
-      }
-      const randomMaxResultArr = Array.from(randomMaxResultSet);
-      setRandomMaxResult(randomMaxResultArr);
-    }
-    setRandomNumsResult([]);
-    /*
-    let randomMaxResultArr = [];
-    for (let i = 0; i < 7; i++) {
-      const randomNumMax = Math.floor(Math.random() * 50 + 1); // generate a random number from 1-50
-      randomMaxResultArr.push(randomNumMax);
-    }
-    //console.log(randomMaxResultArr);
-    setRandomMaxResult(randomMaxResultArr);
-    */
+    dispatch({ type: "pick/randomMax" });
   };
 
   const handleLottoType = (e) => {
     const radioInputValue = e.target.value;
-    if (radioInputValue !== "649" && radioInputValue !== "max") {
-      setLottoType("unselected");
-    } else {
-      setLottoType(radioInputValue);
-      setRandomNumsResult([]);
-      setRandomMaxResult([]);
-    }
+    dispatch({ type: "type/select", payload: radioInputValue });
   };
 
   const reset = () => {
-    setLuckyNums("");
-    setRandomNumsResult([]);
-    setRandomMaxResult([]);
-    setArrLuckyNums([]);
+    dispatch({ type: "reset" });
   };
 
   return (
