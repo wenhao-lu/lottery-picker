@@ -1,0 +1,227 @@
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+#root {
+  margin: auto;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.title {
+  width: 60%;
+  padding-top: 3em;
+}
+/* Container styles */
+.container {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Lottery Pool styles */
+.numberSide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 46vw;
+  height: 60vh;
+}
+
+.numbersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2vw;
+  justify-content: center;
+  margin-bottom: 5em;
+  margin-top: 1.2em;
+}
+
+.singleNum {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.numberBackground {
+  font-size: 14px;
+  color: #333;
+}
+.heightlight {
+  background-color: #035c97;
+  border-radius: 50%;
+  border-color: #003c71;
+  color: #003c71;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+.heightlight::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.heightlight::before {
+  width: 0.9em;
+  height: 0.9em;
+  border: 0.2em solid rgba(255, 254, 246, 0.7);
+  background-color: white;
+  z-index: -1;
+}
+
+.lottoNumWrap {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+.lottoNum {
+  width: 3em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #557f18;
+  border-radius: 50%;
+  border-color: #25840f;
+  color: #144b7c;
+  font-weight: bold;
+  animation: fadeIn 3s ease-in-out forwards;
+  box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.5), 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+.lottoNum::before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.lottoNum::before {
+  width: 1.4em;
+  height: 1.4em;
+  border: 0.2em solid rgba(255, 254, 246, 0.7);
+  background-color: white;
+  z-index: -1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* NumPicking styles */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30vw;
+}
+
+.chooseContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.chooseLottoWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em 3em;
+}
+
+.lottoImg-1,
+.lottoImg-2 {
+  width: 100px;
+  height: auto;
+}
+
+.numInputWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.numInputWrap label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.numInputWrap input {
+  padding: 5px;
+  font-size: 16px;
+  width: 15vw;
+  text-align: center;
+}
+.luckyNumWrap {
+  height: 5.4em;
+}
+.luckyNum {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #ffeb3b;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.ticketBtn {
+  background-color: #00acff;
+}
+.ticketBtn:hover {
+  background-color: #0056b3;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.reset {
+  background-color: #dc3545;
+  margin-top: 20px;
+}
+
+.reset:hover {
+  background-color: #c82333;
+}
+
+.footer {
+  font-size: 0.8em;
+  font-style: italic;
+}
