@@ -225,3 +225,28 @@ button:disabled {
   font-size: 0.8em;
   font-style: italic;
 }
+
+@media (max-width: 430px) {
+  .container {
+    display: block;
+  }
+  .numbersContainer {
+    display: none;
+  }
+  .sidebar {
+    width: 100%;
+  }
+  .numberSide {
+    width: auto;
+    height: auto;
+    margin: 3rem auto;
+  }
+  .lottoNum {
+    width: 2em;
+    height: 2em;
+  }
+  .lottoNum::before {
+    width: 1.2em;
+    height: 1.2em;
+  }
+}

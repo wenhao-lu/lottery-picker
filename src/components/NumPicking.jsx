@@ -39,8 +39,23 @@ export default function NumPicking() {
           </div>
         </div>
       </div>
+
+      <div>
+        <p>
+          {lottoType === null
+            ? "Please select ticket type"
+            : lottoType === "unselected"
+            ? "Please select ticket type"
+            : lottoType === "649"
+            ? "Lotto649"
+            : lottoType === "max"
+            ? "LottoMax"
+            : null}
+        </p>
+      </div>
+
       <div className="numInputWrap">
-        <label>Your Lucky Number</label>
+        <label>Input Personal Lucky Number</label>
         <input type="text" value={luckyNums} onChange={handleInputNum} />
       </div>
       <div className="luckyNumWrap">

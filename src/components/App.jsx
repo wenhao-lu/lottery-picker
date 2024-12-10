@@ -10,8 +10,8 @@ export default function App() {
     <div className="main">
       <img src={lottoImage3} alt="title" className="title" />
       <div className="container">
-        <LotteryPool />
         <NumPicking />
+        <LotteryPool />
       </div>
       <Footer />
     </div>
