@@ -55,12 +55,13 @@ export default function NumPicking() {
       </div>
 
       <div className="mb-2 mt-2 flex flex-col items-center">
-        <label>Add your lucky number 1~50</label>
+        <p>Add your lucky number 1~50</p>
+        <p className="text-sm italic">seperate with , or space</p>
         <input
           type="text"
           value={luckyNums}
           onChange={handleInputNum}
-          className="z-10 bg-stone-200 text-center text-sky-900"
+          className="z-10 mt-1 bg-stone-200 text-center text-sky-900"
         />
       </div>
       <div className="flex h-16 items-center">
